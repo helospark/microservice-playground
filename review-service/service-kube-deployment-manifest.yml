@@ -20,6 +20,13 @@ spec:
         env:
           - name: SPRING_ZIPKIN_BASE-URL
             value: http://zipkin-service.default.svc.cluster.local:9411
+        resources:
+          limits:
+            cpu: 1.0
+            memory: 1G
+          requests:
+            cpu: 0.1
+            memory: 1G
         ports:
         - containerPort: 8080
 ---
@@ -37,3 +44,25 @@ spec:
     protocol: TCP
   selector:
     app: review-service
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: review-service-autoscaler
+  labels:
+    app: review-service
+spec:
+  minReplicas: 1
+  maxReplicas: 5
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: review-deployment
+  metrics:
+   - type: Resource
+     resource:
+       name: cpu
+       target:
+         averageUtilization: 20
+         type: Utilization
+       
