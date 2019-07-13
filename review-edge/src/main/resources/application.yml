@@ -1,0 +1,23 @@
+server:
+  port: 8081
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      base-path: /actuator
+      exposure:
+        include:
+        - '*'
+  info:
+    env:
+      enabled: true
+spring:
+  zipkin:
+    base-url: http://localhost:9411
+    compression:
+      enabled: true
+  application:
+    name: review-edge
+  instance:
+    hostname: localhost
+review-service-url: http://localhost:8080

@@ -1,0 +1,6 @@
+*.versionsBackup
+mvnw
+mvnw.cmd
+*.jar
+.project
+.mvn
